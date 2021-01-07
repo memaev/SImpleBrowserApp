@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         edit_link = findViewById(R.id.edit_link);
         home_btn = findViewById(R.id.home_btn);
         webView = findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("https://google.com");
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
 
