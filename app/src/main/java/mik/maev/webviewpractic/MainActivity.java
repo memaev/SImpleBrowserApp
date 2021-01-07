@@ -5,18 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private WebView webView;
-    private Button find_btn;
+    private ImageButton find_btn;
     private EditText edit_link;
+    private ImageButton home_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +32,19 @@ public class MainActivity extends AppCompatActivity {
 
         find_btn = findViewById(R.id.find_btn);
         edit_link = findViewById(R.id.edit_link);
+        home_btn = findViewById(R.id.home_btn);
         webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("https://google.com");
         webView.setWebViewClient(new WebViewClient());
+
+
+        home_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.loadUrl("https://google.com");
+            }
+        });
 
         find_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 else Toast.makeText(MainActivity.this, "Enter link, please", Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
     public class WebViewClient extends android.webkit.WebViewClient {
