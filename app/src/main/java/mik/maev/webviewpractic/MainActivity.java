@@ -3,6 +3,9 @@ package mik.maev.webviewpractic;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton find_btn;
     private EditText edit_link;
     private ImageButton home_btn;
+    private ImageButton settings_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +34,28 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        SharedPreferences prefs = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         find_btn = findViewById(R.id.find_btn);
         edit_link = findViewById(R.id.edit_link);
         home_btn = findViewById(R.id.home_btn);
+        settings_btn = findViewById(R.id.settings_btn);
         webView = findViewById(R.id.webView);
-        webView.loadUrl("https://google.com");
+        switch (prefs.getInt("home_page", 1)){
+            case 1:
+                webView.loadUrl("https://google.com");
+                edit_link.setText("google.com");
+                break;
+
+            case 2:
+                webView.loadUrl("https://yandex.ru");
+                edit_link.setText("yandex.ru");
+                break;
+
+            case 3:
+                webView.loadUrl("https://duckduckgo.com");
+                edit_link.setText("duckduckgo.com");
+                break;
+        }
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
@@ -42,7 +63,31 @@ public class MainActivity extends AppCompatActivity {
         home_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.loadUrl("https://google.com");
+                switch (prefs.getInt("home_page", 1)){
+                    case 1:
+                        webView.loadUrl("https://google.com");
+                        edit_link.setText("google.com");
+                        break;
+
+                    case 2:
+                        webView.loadUrl("https://yandex.ru");
+                        edit_link.setText("yandex.ru");
+                        break;
+
+                    case 3:
+                        webView.loadUrl("https://duckduckgo.com");
+                        edit_link.setText("duckduckgo.com");
+                        break;
+                }
+
+            }
+        });
+
+        settings_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -51,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String link = edit_link.getText().toString();
                 if (link.length() != 0){
-                    webView.loadUrl(link);
+                    String link_ = "https://";
+                    webView.loadUrl(link_ + link);
                 }
                 else Toast.makeText(MainActivity.this, "Enter link, please", Toast.LENGTH_LONG).show();
             }
